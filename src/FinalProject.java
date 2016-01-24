@@ -1,3 +1,4 @@
+//import everything needed for the game
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -23,34 +24,50 @@ public class FinalProject extends JComponent implements KeyListener {
     // Height and Width of the screen for the game
     static final int WIDTH = 1280;
     static final int HEIGHT = 1024;
+
     // sets the framerate and delay for our game
     // you just need to select an approproate framerate
     long desiredFPS = 60;
     long desiredTime = (1000) / desiredFPS;
+
     //create integer for changing between screens
     int screen = 0;
+
     //create integer to keep score of keys
     int score = 0;
+
+    //create font for the score
     Font myFont = new Font("Arial", Font.BOLD, 72);
+
+    //set boolean to remove rocks
+    boolean removeRocks = false;
+
     //player position variables
     int x = 0;
     int y = 390;
+
     //Create Array to store rocks
     ArrayList<Rectangle> Rocks = new ArrayList<>();
     //create array to store keys
+
     ArrayList<Rectangle> Keys = new ArrayList<>();
+
     //create player Rectangle at the player position
     Rectangle player = new Rectangle(x, y, 262, 193);
+
     //movement variable
     int moveY = 0;
+
     //keyboard variables
     //up arrow variable
     boolean up = false;
+
     //down arrow variable
     boolean down = false;
+
+    //keypress variables
     boolean keyPressed = false;
-    //start
-    boolean reset = false;
+
     //variable for camera
     int camX = 0;
     //import control screen
@@ -69,6 +86,7 @@ public class FinalProject extends JComponent implements KeyListener {
     BufferedImage DeathScreen = loadImage("congrats.jpg");
     //create method to return image when code says to do
 
+    //load image method
     public BufferedImage loadImage(String filename) {
         BufferedImage img = null;
         try {
@@ -100,6 +118,11 @@ public class FinalProject extends JComponent implements KeyListener {
         }
         //set screen 2 as the game screen
         if (screen == 2) {
+            //remove the rocks when restarting the game
+            if (removeRocks = true) {
+                //clear screen
+                g.clearRect(0, 0, WIDTH, HEIGHT);
+            }
             //make water background on screen g.drawImage(DeathScreen, 0, 0, this);
             for (int x = 0; x < WIDTH; x = x + 50) {
                 for (int y = 0; y < HEIGHT; y = y + 50) {
@@ -120,18 +143,25 @@ public class FinalProject extends JComponent implements KeyListener {
                 //draw the keys in the array when code says to
                 g.drawImage(key, points.x - camX, points.y, points.width, points.height, this);
             }
-            //output score
+            //set font
             g.setFont(myFont);
+            //set colour
             g.setColor(Color.WHITE);
+            //output score
             g.drawString("" + score, 1000, 100);
         }
 
         //draw death screen
         if (screen == 3) {
             g.drawImage(DeathScreen, 0, 0, this);
+            //set font
+            g.setFont(myFont);
+            //set colour of words
+            g.setColor(Color.WHITE);
+            //output what the final score is
+            g.drawString("Score: " + score, 900, 100);
         }
         // GAME DRAWING ENDS HERE
-
 
     }
 
@@ -148,6 +178,7 @@ public class FinalProject extends JComponent implements KeyListener {
         // game will end if you set done = false;
         boolean done = false;
         while (!done) {
+
             // determines when we started so we can keep a framerate
             startTime = System.currentTimeMillis();
 
@@ -155,17 +186,13 @@ public class FinalProject extends JComponent implements KeyListener {
             // GAME LOGIC STARTS HERE 
             //make the game only run when screen 2 is up
             if (screen == 2) {
-            if (reset == true) {
-               start();
-        }
-             
-            
-                //when the up arrow is pressed move up
+                //when the up arrow is pressed move up 195 pixels
                 if (up && !keyPressed) {
                     player.y = player.y - 195;
                     keyPressed = true;
+
+                    //when the down arrow is pressed move down 195 pixels
                 } else if (down && !keyPressed) {
-                    //when the down arrow is pressed move down
                     player.y = player.y + 195;
                     keyPressed = true;
                 }
@@ -202,13 +229,13 @@ public class FinalProject extends JComponent implements KeyListener {
                     //make player move with the camera faster
                     player.x = player.x + 8;
                     //increase speed after a score of 30
-                } else if (score > 30 && score < 35) {
+                } else if (score > 30 && score <= 35) {
                     //make camera move forward faster
                     camX = camX + 9;
                     //make player move with the camera faster
                     player.x = player.x + 9;
                     //increase speed after a score of 30
-                } else if (score > 35 && score < 40) {
+                } else if (score > 35 && score <= 40) {
                     //make camera move forward faster
                     camX = camX + 10;
                     //make player move with the camera faster
@@ -222,7 +249,6 @@ public class FinalProject extends JComponent implements KeyListener {
                     //increase speed after a score of 35
                 }
 
-
                 //use an iterator to remove keys when the player intersects them
                 Iterator<Rectangle> it = Keys.iterator();
                 while (it.hasNext()) {
@@ -231,6 +257,7 @@ public class FinalProject extends JComponent implements KeyListener {
                         it.remove();
                         //add 1 score everytime player gets a key
                         score = score + 1;
+                        //print the score everytime player gets a key
                         System.out.println(score);
                     }
                 }
@@ -238,22 +265,17 @@ public class FinalProject extends JComponent implements KeyListener {
                 //make player and rocks collide
                 for (Rectangle obstacle : Rocks) {
                     if (obstacle.intersects(player)) {
+                        //when the player and a rock collide, deathscreen appears
                         screen = 3;
 
                     }
                 }
 
-
             }
-            //make player die when he hits the rocks
-
 
             // GAME LOGIC ENDS HERE 
-
             // update the drawing (calls paintComponent)
             repaint();
-
-
 
             // SLOWS DOWN THE GAME BASED ON THE FRAMERATE ABOVE
             // USING SOME SIMPLE MATH
@@ -303,25 +325,32 @@ public class FinalProject extends JComponent implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        //make integer for pressing keys
         int key = e.getKeyCode();
+        //if up is pressed then the up variable is true
         if (key == KeyEvent.VK_UP && !(player.y <= 25)) {
             up = true;
+            //if down is pressed then the down variable is true
         } else if (key == KeyEvent.VK_DOWN && (player.y <= 700)) {
             down = true;
         }
         //make screen go from 0 - 1 after pressing enter
         if (screen == 0 && key == KeyEvent.VK_ENTER) {
             screen = 1;
+
+//make screen go from 1 - 2 after pressing enter
         } else if (screen == 1 && key == KeyEvent.VK_ENTER) {
-            //make screen go from 1 - 2 after pressing enter
             screen = 2;
-            reset = true;
+            start();
+
+//make game restart if you press enter  
         } else if (screen == 3 && key == KeyEvent.VK_ENTER) {
-            //make game restart if you press enter  
             screen = 2;
-            reset = true;
+            start();
+
+            //make game restart if you press enter on deathscreen
         } else if (screen == 3 && key == KeyEvent.VK_ESCAPE) {
-            //make game restart if you press enter  
+
             screen = 0;
         }
     }
@@ -329,23 +358,24 @@ public class FinalProject extends JComponent implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
+        //when keys are released, booleans go back to false
         if (key == KeyEvent.VK_UP || key == KeyEvent.VK_DOWN) {
             keyPressed = false;
             up = false;
             down = false;
         }
-        if (key == KeyEvent.VK_ENTER) {
-            reset = false;
-        }
-
-
     }
 
     public void start() {
+        removeRocks = true;
+        //set x values for all of the rocks
         int rockX = 500;
+        //set x values for all of the keys
         int keyX = 575;
-        //creat for loop to repeat drawing the rocks
+        //creat for loop to repeat drawing the rocks       
         for (int i = 0; i <= 100; i = i + 1) {
+            //make loop stop once player dies
+
             //make random number generator to randomize pattern of rocks
             int randomNumber = (int) (Math.random() * 5) + 1;
             //add the position of the rocks
@@ -397,27 +427,24 @@ public class FinalProject extends JComponent implements KeyListener {
             //increase X value of key for next loop
             keyX = keyX + 1000;
         }
-
-
-        //Reset variables
+        //create integer for changing between screens
+        screen = 2;
+        //create integer to keep score of keys
         score = 0;
+        //player position variables
+        player.x = 0;
+        player.y = 390;
+
+        camX = 0;
+
         //movement variable
         moveY = 0;
         //keyboard variables
         //up arrow variable
         up = false;
-        //player postition variables
-        x = 0;
-        y = 390;
         //down arrow variable
         down = false;
         keyPressed = false;
-
-        //variable for camera
-        camX = 0;
-
-        player = new Rectangle(x, y, 262, 193);
-
 
     }
 }
