@@ -70,6 +70,9 @@ public class FinalProject extends JComponent implements KeyListener {
 
     //variable for camera
     int camX = 0;
+    
+    //import win screen
+    BufferedImage Winner = loadImage("winner.jpg");
     //import control screen
     BufferedImage controls = loadImage("Controls.jpg");
     //import title screen
@@ -160,6 +163,9 @@ public class FinalProject extends JComponent implements KeyListener {
             g.setColor(Color.WHITE);
             //output what the final score is
             g.drawString("Score: " + score, 900, 100);
+        }
+        if(score == 100){
+            g.drawImage(Winner , 0, 0, this);
         }
         // GAME DRAWING ENDS HERE
 
@@ -367,6 +373,11 @@ public class FinalProject extends JComponent implements KeyListener {
     }
 
     public void start() {
+        //remove rocks from last game
+        Rocks.clear();
+        //remove keys from last game
+        Keys.clear();
+        
         removeRocks = true;
         //set x values for all of the rocks
         int rockX = 500;
@@ -386,7 +397,7 @@ public class FinalProject extends JComponent implements KeyListener {
                 Rocks.add(new Rectangle(rockX, 195, 303, 195));
                 Rocks.add(new Rectangle(rockX, 585, 303, 195));
                 Rocks.add(new Rectangle(rockX, 780, 303, 195));
-                Keys.add(new Rectangle(keyX - camX, 420, 120, 120));
+                Keys.add(new Rectangle(keyX, 420, 120, 120));
                 //assign these rocks to the number 1 from the number generator
             } else if (randomNumber == 2) {
                 //Missing rock at Y position 0          
@@ -394,7 +405,7 @@ public class FinalProject extends JComponent implements KeyListener {
                 Rocks.add(new Rectangle(rockX, 195, 303, 195));
                 Rocks.add(new Rectangle(rockX, 585, 303, 195));
                 Rocks.add(new Rectangle(rockX, 780, 303, 195));
-                Keys.add(new Rectangle(keyX - camX, 0, 120, 120));
+                Keys.add(new Rectangle(keyX, 0, 120, 120));
                 //assign these rocks to the number 2 from the number generator
             } else if (randomNumber == 3) {
                 ////missing rock at Y position 195         
@@ -402,7 +413,7 @@ public class FinalProject extends JComponent implements KeyListener {
                 Rocks.add(new Rectangle(rockX, 390, 303, 195));
                 Rocks.add(new Rectangle(rockX, 585, 303, 195));
                 Rocks.add(new Rectangle(rockX, 780, 303, 195));
-                Keys.add(new Rectangle(keyX - camX, 195, 120, 120));
+                Keys.add(new Rectangle(keyX, 195, 120, 120));
                 //assign these rocks to the number 3 from the number generator
             } else if (randomNumber == 4) {
                 //missing rock at Y position 585         
@@ -410,7 +421,7 @@ public class FinalProject extends JComponent implements KeyListener {
                 Rocks.add(new Rectangle(rockX, 195, 303, 195));
                 Rocks.add(new Rectangle(rockX, 390, 303, 195));
                 Rocks.add(new Rectangle(rockX, 780, 303, 195));
-                Keys.add(new Rectangle(keyX - camX, 585, 120, 120));
+                Keys.add(new Rectangle(keyX, 585, 120, 120));
                 //assign these rocks to the number 4 from the number generator
             } else if (randomNumber == 5) {
                 //missing rock at Y position 780          
@@ -418,7 +429,7 @@ public class FinalProject extends JComponent implements KeyListener {
                 Rocks.add(new Rectangle(rockX, 195, 303, 195));
                 Rocks.add(new Rectangle(rockX, 585, 303, 195));
                 Rocks.add(new Rectangle(rockX, 390, 303, 195));
-                Keys.add(new Rectangle(keyX - camX, 780, 120, 120));
+                Keys.add(new Rectangle(keyX, 780, 120, 120));
                 //assign these rocks to the number 5 from the number generator
             }
 
