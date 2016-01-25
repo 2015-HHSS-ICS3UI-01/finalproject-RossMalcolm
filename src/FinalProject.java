@@ -24,53 +24,38 @@ public class FinalProject extends JComponent implements KeyListener {
     // Height and Width of the screen for the game
     static final int WIDTH = 1280;
     static final int HEIGHT = 1024;
-
     // sets the framerate and delay for our game
     // you just need to select an approproate framerate
     long desiredFPS = 60;
     long desiredTime = (1000) / desiredFPS;
-
     //create integer for changing between screens
     int screen = 0;
-
     //create integer to keep score of keys
     int score = 0;
-
     //create font for the score
     Font myFont = new Font("Arial", Font.BOLD, 72);
-
     //set boolean to remove rocks
     boolean removeRocks = false;
-
     //player position variables
     int x = 0;
     int y = 390;
-
     //Create Array to store rocks
     ArrayList<Rectangle> Rocks = new ArrayList<>();
     //create array to store keys
-
     ArrayList<Rectangle> Keys = new ArrayList<>();
-
     //create player Rectangle at the player position
     Rectangle player = new Rectangle(x, y, 262, 193);
-
     //movement variable
     int moveY = 0;
-
     //keyboard variables
     //up arrow variable
     boolean up = false;
-
     //down arrow variable
     boolean down = false;
-
     //keypress variables
     boolean keyPressed = false;
-
     //variable for camera
     int camX = 0;
-    
     //import win screen
     BufferedImage Winner = loadImage("winner.jpg");
     //import control screen
@@ -164,8 +149,9 @@ public class FinalProject extends JComponent implements KeyListener {
             //output what the final score is
             g.drawString("Score: " + score, 900, 100);
         }
-        if(score == 100){
-            g.drawImage(Winner , 0, 0, this);
+
+        if (screen == 4) {
+            g.drawImage(Winner, 0, 0, this);
         }
         // GAME DRAWING ENDS HERE
 
@@ -251,8 +237,10 @@ public class FinalProject extends JComponent implements KeyListener {
                     //make camera move forward faster
                     camX = camX + 11;
                     //make player move with the camera faster
-                    player.x = player.x + 11;
-                    //increase speed after a score of 35
+                    player.x = player.x + 11;                  
+                } //make winning screen
+                if (score == 100) {
+                    screen = 4;
                 }
 
                 //use an iterator to remove keys when the player intersects them
@@ -377,7 +365,7 @@ public class FinalProject extends JComponent implements KeyListener {
         Rocks.clear();
         //remove keys from last game
         Keys.clear();
-        
+
         removeRocks = true;
         //set x values for all of the rocks
         int rockX = 500;
